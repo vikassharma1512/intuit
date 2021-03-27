@@ -50,17 +50,14 @@ public class BiddingWinnerImpl implements BiddingWinner {
     public void execute() {
         log.info("Checking for project deadlines.");
 
-        List<BidWinnerDto> winningBid = jdbcTemplate.query(query, new RowMapper<BidWinnerDto>() {
-            @Override
-            public BidWinnerDto mapRow(ResultSet rs, int rownumber) throws SQLException {
-                BidWinnerDto e = new BidWinnerDto();
-                e.setProjectId(rs.getInt(1));
-                e.setBidId(rs.getInt(2));
-                e.setBidderId(rs.getInt(3));
-                e.setQuote(rs.getDouble(4));
-                e.setCreateDate(rs.getTimestamp(5).toLocalDateTime());
-                return e;
-            }
+        List<BidWinnerDto> winningBid = jdbcTemplate.query(query, (rs, rownumber) -> {
+            BidWinnerDto winnerDto = new BidWinnerDto();
+            winnerDto.setProjectId(rs.getInt(1));
+            winnerDto.setBidId(rs.getInt(2));
+            winnerDto.setBidderId(rs.getInt(3));
+            winnerDto.setQuote(rs.getDouble(4));
+            winnerDto.setCreateDate(rs.getTimestamp(5).toLocalDateTime());
+            return winnerDto;
         });
 
         if (winningBid == null || winningBid.size() == 0) {
