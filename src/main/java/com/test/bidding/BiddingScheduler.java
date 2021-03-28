@@ -1,8 +1,5 @@
 package com.test.bidding;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.test.bidding.task.BiddingWinner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,18 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Component
-public class BiddingScheduledTasks {
+import static java.time.LocalDateTime.now;
 
-    private static final Logger log = LoggerFactory.getLogger(BiddingScheduledTasks.class);
+@Component
+public class BiddingScheduler {
+
+    private static final Logger log = LoggerFactory.getLogger(BiddingScheduler.class);
 
     @Autowired
     BiddingWinner biddingWinner;
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
-    @Scheduled(fixedRateString ="${scheduler.timer}", initialDelay=1000)
-    public void reportCurrentTime() {
+    @Scheduled(cron = "${cron.expression}")
+    public void cronJobSch() {
+        log.info("BiddingScheduler started at: {}", now());
         biddingWinner.execute();
     }
 

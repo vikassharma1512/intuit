@@ -10,15 +10,15 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-class BiddingScheduledTasksTest {
+class BiddingSchedulerTest {
 
     @SpyBean
-    BiddingScheduledTasks tasks;
+    BiddingScheduler tasks;
 
     @Test
     void reportCurrentTime() {
-        await().atMost(Duration.TEN_SECONDS).untilAsserted(() -> {
-            verify(tasks, atLeast(2)).reportCurrentTime();
+        await().atMost(Duration.ONE_MINUTE).untilAsserted(() -> {
+            verify(tasks, atLeast(1)).cronJobSch();
         });
     }
 

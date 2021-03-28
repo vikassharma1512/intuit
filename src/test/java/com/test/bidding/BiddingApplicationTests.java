@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BiddingApplicationTests {
 
     @Autowired
-    private BiddingScheduledTasks tasks;
+    private BiddingScheduler tasks;
 
     @Test
     void contextLoads() {
