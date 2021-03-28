@@ -5,11 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -20,10 +17,10 @@ public class BiddingWinnerImpl implements BiddingWinner {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static  final  String queryInsertWinners = "INSERT INTO BID_WINNER VALUES (?, ?, ?, ?, ?)";
+    private static  final  String INSERT_WINNERS = "INSERT INTO BID_WINNER VALUES (?, ?, ?, ?, ?)";
 
 
-    private  static final String query = "select \n" +
+    private  static final String SELECT_WINNERS = "select \n" +
             "p.id  id\n" +
             ", b.id\n" +
             ", b.bidder_id\n" +
@@ -50,7 +47,7 @@ public class BiddingWinnerImpl implements BiddingWinner {
     public void execute() {
         log.info("Checking for project deadlines.");
 
-        List<BidWinnerDto> winningBid = jdbcTemplate.query(query, (rs, rownumber) -> {
+        List<BidWinnerDto> winningBid = jdbcTemplate.query(SELECT_WINNERS, (rs, rownumber) -> {
             BidWinnerDto winnerDto = new BidWinnerDto();
             winnerDto.setProjectId(rs.getInt(1));
             winnerDto.setBidId(rs.getInt(2));
@@ -60,14 +57,14 @@ public class BiddingWinnerImpl implements BiddingWinner {
             return winnerDto;
         });
 
-        if (winningBid == null || winningBid.size() == 0) {
+        if (winningBid.isEmpty()) {
             log.info("No Bids settled.");
         } else {
             log.info("winning bids: ");
             winningBid.forEach(record -> {
                 log.info(record.toString());
                 jdbcTemplate.update(
-                        queryInsertWinners,
+                        INSERT_WINNERS,
                         record.getProjectId()
                         , record.getBidId()
                         , record.getBidderId()
