@@ -1,6 +1,6 @@
-package com.test.bidding;
+package com.bidding;
 
-import com.test.bidding.task.BiddingWinner;
+import com.bidding.task.BiddingWinner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

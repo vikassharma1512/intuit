@@ -1,4 +1,4 @@
-package com.test.bidding;
+package com.bidding;
 
 import org.awaitility.Duration;
 import org.junit.jupiter.api.Test;
@@ -9,13 +9,13 @@ import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+//@SpringBootTest
 class BiddingSchedulerTest {
 
     @SpyBean
     BiddingScheduler tasks;
 
-    @Test
+   // @Test
     void reportCurrentTime() {
         await().atMost(Duration.ONE_MINUTE).untilAsserted(() -> {
             verify(tasks, atLeast(1)).cronJobSch();

@@ -1,6 +1,6 @@
-package com.test.bidding.task;
+package com.bidding.task;
 
-import com.test.bidding.dto.BidWinnerDto;
+import com.bidding.dto.BidWinnerDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ public class BiddingWinnerImpl implements BiddingWinner {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static  final  String INSERT_WINNERS = "INSERT INTO BID_WINNER VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_WINNERS = "INSERT INTO BID_WINNER VALUES (?, ?, ?, ?, ?)";
 
 
-    private  static final String SELECT_WINNERS = "select \n" +
+    private static final String SELECT_WINNERS = "select \n" +
             "p.id  id\n" +
             ", b.id\n" +
             ", b.bidder_id\n" +

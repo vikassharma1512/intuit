@@ -1,4 +1,4 @@
-package com.test.bidding.task;
+package com.bidding.task;
 
 public interface BiddingWinner {
 

@@ -1,4 +1,4 @@
-package com.test.bidding.dto;
+package com.bidding.dto;
 
 import java.time.LocalDateTime;
 
