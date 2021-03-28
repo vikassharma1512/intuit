@@ -3,25 +3,26 @@ package com.test.bidding.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
 @Configuration
-@ConfigurationProperties(prefix = "jdbc")
-public class JdbcConfig {
-    private String drivername;
+@ConfigurationProperties("spring.datasource")
+public class DBConfiguration {
+    private String driverClassName;
     private String url;
     private String username;
     private String password;
 
-    public String getDrivername() {
-        return drivername;
+    public String getDriverClassName() {
+        return driverClassName;
     }
 
-    public void setDrivername(String drivername) {
-        this.drivername = drivername;
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
     }
 
     public String getUrl() {
@@ -48,10 +49,22 @@ public class JdbcConfig {
         this.password = password;
     }
 
+    @Profile("dev")
     @Bean
-    public DataSource mysqlDataSource() {
+    public DataSource devMysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(drivername);
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        return dataSource;
+    }
+
+    @Profile("test")
+    @Bean
+    public DataSource testH2DataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
