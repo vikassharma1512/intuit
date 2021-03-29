@@ -3,7 +3,6 @@ package com.bidding;
 import com.bidding.dto.BidWinnerDto;
 import org.awaitility.Duration;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,8 +54,8 @@ class BiddingSchedulerTest {
     void testSingleProjectBidWinner() throws SQLException {
         ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), new ClassPathResource(SINGLE_PROJECT_BID_DATA));
         await().
-                atMost(Duration.ONE_MINUTE).
-                untilAsserted(() -> verify(tasks, atLeast(2)).cronJobSch());
+                atMost(Duration.FIVE_MINUTES).
+                untilAsserted(() -> verify(tasks, atLeast(1)).cronJobSch());
 
         List<BidWinnerDto> winningBid = getBidWinnerDtos();
 
@@ -70,7 +69,7 @@ class BiddingSchedulerTest {
         ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), new ClassPathResource(MULTIPLE_PROJECT_BID_DATA));
         await().
                 atMost(Duration.FIVE_MINUTES).
-                untilAsserted(() -> verify(tasks, atLeast(2)).cronJobSch());
+                untilAsserted(() -> verify(tasks, atLeast(1)).cronJobSch());
 
         List<BidWinnerDto> winningBid = getBidWinnerDtos();
 
@@ -84,7 +83,7 @@ class BiddingSchedulerTest {
         ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), new ClassPathResource(SAME_TIME_PRICE_BID_DATA));
         await().
                 atMost(Duration.FIVE_MINUTES).
-                untilAsserted(() -> verify(tasks, atLeast(2)).cronJobSch());
+                untilAsserted(() -> verify(tasks, atLeast(1)).cronJobSch());
 
         List<BidWinnerDto> winningBid = getBidWinnerDtos();
 
