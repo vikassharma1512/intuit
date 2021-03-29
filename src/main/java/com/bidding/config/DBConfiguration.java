@@ -1,14 +1,11 @@
 package com.bidding.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
@@ -53,7 +50,7 @@ public class DBConfiguration {
     }
 
     @Profile("dev")
-    @Bean(name="biddingData")
+    @Bean(name = "biddingData")
     public DataSource devMysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClassName);
@@ -63,20 +60,8 @@ public class DBConfiguration {
         return dataSource;
     }
 
-    /*
-    @Profile("test")
     @Bean
-    public DataSource testH2DataSource() {
-        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:db/schema.sql")
-                .addScript("classpath:db/data.sql")
-                .build();
-    }
-
-     */
-
-    @Bean
-    public JdbcTemplate jdbcTemplate( DataSource dataSource) {
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return jdbcTemplate;
     }

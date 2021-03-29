@@ -14,7 +14,7 @@ CREATE TABLE customer (
 CREATE TABLE project (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(245) DEFAULT NULL,
-  deadline DATE DEFAULT NULL,
+  deadline DATETIME DEFAULT NULL,
   estimated_hours INT DEFAULT NULL,
   customer_id INT DEFAULT NULL
 );
