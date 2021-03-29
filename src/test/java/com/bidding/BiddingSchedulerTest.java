@@ -32,6 +32,7 @@ class BiddingSchedulerTest {
     private static final String CREATE_SCHEMA = "db/schema.sql";
     private static final String SINGLE_PROJECT_BID_DATA = "db/single_project_bid_data.sql";
     private static final String MULTIPLE_PROJECT_BID_DATA = "db/multiple_project_bid_data.sql";
+    private static final String SAME_TIME_PRICE_BID_DATA = "db/same_time_price_bid_data.sql";
 
 
     @BeforeEach
@@ -76,6 +77,24 @@ class BiddingSchedulerTest {
         assertEquals(2, winningBid.size());
         assertEquals(125, winningBid.get(0).getQuote());
         assertEquals(300, winningBid.get(1).getQuote());
+    }
+
+    @Test
+    void testSameTimePriceBidWinner() throws SQLException {
+        ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), new ClassPathResource(SAME_TIME_PRICE_BID_DATA));
+        await().
+                atMost(Duration.FIVE_MINUTES).
+                untilAsserted(() -> verify(tasks, atLeast(2)).cronJobSch());
+
+        List<BidWinnerDto> winningBid = getBidWinnerDtos();
+
+        assertEquals(2, winningBid.size());
+        //Project 1
+        assertEquals(600, winningBid.get(0).getQuote());
+        assertEquals(1, winningBid.get(0).getBidderId());
+        //Project 2
+        assertEquals(300, winningBid.get(1).getQuote());
+        assertEquals(3, winningBid.get(1).getBidderId());
     }
 
 
