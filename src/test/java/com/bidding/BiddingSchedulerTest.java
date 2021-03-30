@@ -96,6 +96,16 @@ class BiddingSchedulerTest {
         assertEquals(3, winningBid.get(1).getBidderId());
     }
 
+    @Test
+    void testNoBidWinner() throws SQLException {
+        await().
+                atMost(Duration.ONE_MINUTE).
+                untilAsserted(() -> verify(tasks, atLeast(1)).cronJobSch());
+
+        List<BidWinnerDto> winningBid = getBidWinnerDtos();
+
+        assertEquals(0, winningBid.size());
+    }
 
     private List<BidWinnerDto> getBidWinnerDtos() {
         String SELECT_WINNERS = "SELECT project_id, bid_id, bidder_id, quote, create_date FROM bid_winner";
